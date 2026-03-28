@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function Dashboard({ setStep }) {
   const email = localStorage.getItem("email");
@@ -19,15 +19,10 @@ export default function Dashboard({ setStep }) {
     }
   }, [token, setStep]);
 
-  // ✅ FETCH FILES
-  useEffect(() => {
-    if (tab === "files" || tab === "share") {
-      fetchFiles();
-    }
-  }, [tab]);
-
-  const fetchFiles = async () => {
+  // ✅ FETCH FILES FUNCTION (useCallback to fix eslint warning)
+  const fetchFiles = useCallback(async () => {
     const userId = localStorage.getItem("userId");
+    if (!userId) return;
 
     try {
       const res = await fetch(`${API_URL}/api/files/${userId}`);
@@ -36,13 +31,20 @@ export default function Dashboard({ setStep }) {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [API_URL]);
+
+  // ✅ FETCH FILES ON TAB CHANGE
+  useEffect(() => {
+    if (tab === "files" || tab === "share") {
+      fetchFiles();
+    }
+  }, [tab, fetchFiles]);
 
   // ✅ FILE UPLOAD
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     const userId = localStorage.getItem("userId");
-    if (!file) return;
+    if (!file || !userId) return;
 
     const formData = new FormData();
     formData.append("file", file);
@@ -124,10 +126,8 @@ export default function Dashboard({ setStep }) {
 
   return (
     <div style={container}>
-
       {/* LEFT CONTENT */}
       <div style={content}>
-
         {/* PROFILE */}
         {tab === "profile" && (
           <div>
@@ -204,7 +204,6 @@ export default function Dashboard({ setStep }) {
             </div>
           </div>
         )}
-
       </div>
 
       {/* RIGHT SIDEBAR */}
@@ -232,7 +231,6 @@ export default function Dashboard({ setStep }) {
 
         <button style={logoutBtn} onClick={handleLogout}>Logout</button>
       </div>
-
     </div>
   );
 }
