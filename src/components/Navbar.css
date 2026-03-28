@@ -1,0 +1,27 @@
+.navbar {
+  width: 100vw;
+  height: 70px;
+  padding: 0 80px;
+  background: #6ec1f5;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.navbar ul {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+  align-items: center;
+}
+
+.download {
+  background: white;
+  color: #6ec1f5;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}

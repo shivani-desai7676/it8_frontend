@@ -1,0 +1,41 @@
+.dashboard{
+  display:flex;
+  height:100vh;
+  background:#f4f6f9;
+}
+
+/* LEFT SIDE */
+
+.dashboard-main{
+  flex:3;
+  padding:40px;
+}
+
+.user-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-top:20px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+/* RIGHT PANEL */
+
+.dashboard-side{
+  flex:1;
+  background:white;
+  border-left:1px solid #eee;
+  padding:30px;
+}
+
+.dashboard-side ul{
+  list-style:none;
+  padding:0;
+  margin-top:20px;
+}
+
+.dashboard-side li{
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+}
