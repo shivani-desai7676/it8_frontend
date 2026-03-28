@@ -34,28 +34,38 @@ export default function Dashboard({ setStep }) {
   };
 
   // ✅ FILE UPLOAD
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const userId = localStorage.getItem("userId");
-   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  // FILE UPLOAD
+const handleFileUpload = async (e) => {
+  const file = e.target.files[0];
+  const userId = localStorage.getItem("userId");
+  const API_URL = process.env.REACT_APP_API_URL;
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("userId", userId);
+  if (!file) return;
 
-    try {
-      await fetch(`${API_URL}/api/files/upload`, {
-        method: "POST",
-        body: formData
-      });
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("userId", userId);
 
+  try {
+    const res = await fetch(`${API_URL}/api/files/upload`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+    if (res.ok) {
       alert("File uploaded successfully ✅");
       fetchFiles();
-
-    } catch (err) {
-      console.error(err);
+    } else {
+      alert(data.message || "Upload failed ❌");
     }
-  };
+
+  } catch (err) {
+    console.error(err);
+    alert("Upload failed ❌");
+  }
+};
+
 
   // ✅ DELETE FILE (NEW)
   const deleteFile = async (fileId) => {
